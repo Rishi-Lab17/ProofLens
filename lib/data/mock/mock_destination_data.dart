@@ -1,0 +1,61 @@
+import '../models/destination.dart';
+
+class MockDestinationData {
+  static const destinations = [
+    Destination(
+      id: 'palace',
+      name: 'Bangalore Palace',
+      address: 'Vasanth Nagar, Bengaluru, Karnataka',
+      category: 'Landmark',
+      latitude: 13.0035,
+      longitude: 77.5891,
+      distance: '1.8 km',
+      eta: '8 min',
+      description: 'A historic landmark known for its Tudor-style architecture and expansive grounds.',
+    ),
+    Destination(
+      id: 'cubbon',
+      name: 'Cubbon Park',
+      address: 'Kasturba Road, Bengaluru, Karnataka',
+      category: 'Park',
+      latitude: 12.9763,
+      longitude: 77.5929,
+      distance: '2.4 km',
+      eta: '10 min',
+      description: 'A large green space in the heart of Bengaluru with walking paths and historic buildings.',
+    ),
+    Destination(
+      id: 'vidhana',
+      name: 'Vidhana Soudha',
+      address: 'Dr Ambedkar Veedhi, Bengaluru, Karnataka',
+      category: 'Landmark',
+      latitude: 12.9797,
+      longitude: 77.5907,
+      distance: '2.7 km',
+      eta: '11 min',
+      description: 'A prominent Bengaluru landmark and seat of the Karnataka legislature.',
+    ),
+    Destination(
+      id: 'lalbagh',
+      name: 'Lalbagh Botanical Garden',
+      address: 'Mavalli, Bengaluru, Karnataka',
+      category: 'Garden',
+      latitude: 12.9507,
+      longitude: 77.5848,
+      distance: '5.1 km',
+      eta: '18 min',
+      description: 'A historic botanical garden featuring diverse plants, pathways and the iconic glass house.',
+    ),
+    Destination(
+      id: 'iskcon',
+      name: 'ISKCON Temple Bengaluru',
+      address: 'Rajajinagar, Bengaluru, Karnataka',
+      category: 'Place of Interest',
+      latitude: 13.0098,
+      longitude: 77.5511,
+      distance: '6.7 km',
+      eta: '24 min',
+      description: 'A major cultural and spiritual destination on the western side of Bengaluru.',
+    ),
+  ];
+}
