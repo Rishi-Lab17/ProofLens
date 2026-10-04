@@ -1,4 +1,4 @@
-name: prooflens
+name: ProofLens
 description: "A professional GPS camera and location evidence application."
 publish_to: 'none'
 
@@ -10,18 +10,28 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
 
-  # ProofLens image assets
   assets:
     - assets/images/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/prooflens_icon.png"
+  remove_alpha_ios: true
+
+  web:
+    generate: true
+    image_path: "assets/images/prooflens_icon.png"
+    background_color: "#07111F"
+    theme_color: "#0B6DFF"
