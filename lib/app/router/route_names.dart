@@ -7,6 +7,8 @@ class RouteNames {
   static const evidenceDetails = '/evidence-details';
 
   static const location = '/location';
+  static const nearbyPlaces = '/nearby-places';
+
   static const search = '/search';
   static const navigation = '/navigation';
 

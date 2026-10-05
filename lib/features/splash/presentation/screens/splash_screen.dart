@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/router/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_radius.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
 
@@ -17,11 +16,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late final AnimationController _logoController;
   late final AnimationController _contentController;
 
-  late final Animation<double> _logoScale;
-  late final Animation<double> _logoOpacity;
   late final Animation<double> _contentOpacity;
   late final Animation<Offset> _contentSlide;
 
@@ -31,24 +27,9 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    _logoController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    );
-
     _contentController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
-    );
-
-    _logoScale = CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.easeOutBack,
-    );
-
-    _logoOpacity = CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.easeOut,
     );
 
     _contentOpacity = CurvedAnimation(
@@ -56,218 +37,293 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.easeOut,
     );
 
-    _contentSlide =
-        Tween<Offset>(begin: const Offset(0, 0.12), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _contentController,
-            curve: Curves.easeOutCubic,
-          ),
-        );
+    _contentSlide = Tween<Offset>(
+      begin: const Offset(0, 0.08),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _contentController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
 
-    _start();
+    _contentController.forward();
 
-    _timer = Timer(const Duration(milliseconds: 2800), _openHome);
-  }
-
-  Future<void> _start() async {
-    await _logoController.forward();
-
-    if (!mounted) return;
-
-    await _contentController.forward();
+    _timer = Timer(
+      const Duration(milliseconds: 2800),
+      _openHome,
+    );
   }
 
   void _openHome() {
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacementNamed(RouteNames.home);
+    Navigator.of(context).pushReplacementNamed(
+      RouteNames.home,
+    );
   }
 
   @override
   void dispose() {
     _timer?.cancel();
-    _logoController.dispose();
     _contentController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.xl),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FadeTransition(
-                  opacity: _logoOpacity,
-                  child: ScaleTransition(
-                    scale: _logoScale,
-                    child: const _Logo(),
+      backgroundColor: const Color(0xFF07111F),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Existing ProofLens background.
+          Image.asset(
+            'assets/images/prooflens_background.jpg',
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
+          ),
+
+          // Covers the branding already embedded in the JPG.
+          // This does NOT replace or generate the background image.
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: MediaQuery.sizeOf(context).height * 0.31,
+            child: IgnorePointer(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      const Color(0xFF06182C).withValues(alpha: 0.98),
+                      const Color(0xFF0A2945).withValues(alpha: 0.96),
+                      const Color(0xFF123653).withValues(alpha: 0.94),
+                      const Color(0xFF123653).withValues(alpha: 0.15),
+                    ],
+                    stops: const [
+                      0.0,
+                      0.45,
+                      0.78,
+                      1.0,
+                    ],
                   ),
                 ),
+              ),
+            ),
+          ),
 
-                const SizedBox(height: AppSpacing.xl),
+          // Soft overall readability overlay.
+          Positioned.fill(
+            child: IgnorePointer(
+              child: ColoredBox(
+                color: Colors.black26,
+              ),
+            ),
+          ),
 
-                FadeTransition(
+          // Splash content.
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 28,
+                ),
+                child: FadeTransition(
                   opacity: _contentOpacity,
                   child: SlideTransition(
                     position: _contentSlide,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(height: 80),
+
+                        // Clean text branding.
                         Text(
                           'ProofLens',
                           textAlign: TextAlign.center,
                           style: AppTypography.display.copyWith(
-                            color: isDark
-                                ? Colors.white
-                                : AppColors.textPrimary,
+                            color: Colors.white,
                             fontWeight: FontWeight.w800,
+                            letterSpacing: -0.8,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withValues(
+                                  alpha: 0.45,
+                                ),
+                                blurRadius: 14,
+                              ),
+                            ],
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.sm),
+                        const SizedBox(height: 8),
 
                         Text(
                           'Capture • Locate • Verify',
                           textAlign: TextAlign.center,
                           style: AppTypography.bodyLarge.copyWith(
-                            color: isDark
-                                ? Colors.white.withValues(alpha: 0.78)
-                                : AppColors.textSecondary,
+                            color: Colors.white.withValues(
+                              alpha: 0.86,
+                            ),
+                            letterSpacing: 1.1,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(
+                          height: AppSpacing.xl,
+                        ),
 
                         Container(
+                          width: double.infinity,
+                          constraints: const BoxConstraints(
+                            maxWidth: 370,
+                          ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                            vertical: AppSpacing.lg,
+                            horizontal: 22,
+                            vertical: 20,
                           ),
                           decoration: BoxDecoration(
-                            color: isDark
-                                ? AppColors.cardDark.withValues(alpha: 0.86)
-                                : Colors.white.withValues(alpha: 0.86),
-                            borderRadius: BorderRadius.circular(AppRadius.card),
+                            color: const Color(
+                              0xFF071B33,
+                            ).withValues(alpha: 0.82),
+                            borderRadius:
+                                BorderRadius.circular(24),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.40),
+                              color: Colors.white.withValues(
+                                alpha: 0.16,
+                              ),
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.12),
+                                color: Colors.black.withValues(
+                                  alpha: 0.30,
+                                ),
                                 blurRadius: 30,
-                                offset: const Offset(0, 12),
+                                offset: const Offset(0, 14),
                               ),
                             ],
                           ),
-                          child: Column(
+                          child: Row(
                             children: [
-                              const Icon(
-                                Icons.location_on_rounded,
-                                color: AppColors.primary,
-                                size: 28,
-                              ),
-                              const SizedBox(height: AppSpacing.sm),
-                              Text(
-                                'Your trusted companion',
-                                style: AppTypography.titleMedium.copyWith(
-                                  color: isDark
-                                      ? Colors.white
-                                      : AppColors.textPrimary,
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary
+                                      .withValues(alpha: 0.18),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.30),
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.location_on_rounded,
+                                  color: Colors.white,
+                                  size: 24,
                                 ),
                               ),
-                              const SizedBox(height: AppSpacing.xs),
-                              Text(
-                                'for real-world evidence',
-                                style: AppTypography.bodyMedium.copyWith(
-                                  color: isDark
-                                      ? AppColors.darkTextSecondary
-                                      : AppColors.textSecondary,
+
+                              const SizedBox(width: 16),
+
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Your trusted companion',
+                                      style: AppTypography
+                                          .titleMedium
+                                          .copyWith(
+                                        color: Colors.white,
+                                        fontWeight:
+                                            FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'for real-world evidence',
+                                      style: AppTypography
+                                          .bodyMedium
+                                          .copyWith(
+                                        color: Colors.white
+                                            .withValues(
+                                          alpha: 0.68,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.xxl),
+                        const SizedBox(height: 30),
 
                         const SizedBox(
-                          width: 30,
-                          height: 30,
+                          width: 32,
+                          height: 32,
                           child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            valueColor: AlwaysStoppedAnimation<Color>(
+                            strokeWidth: 2.8,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(
                               AppColors.primary,
                             ),
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.md),
+                        const SizedBox(height: 14),
 
                         Text(
                           'Preparing your workspace...',
                           style: AppTypography.labelMedium.copyWith(
-                            color: isDark
-                                ? AppColors.darkTextSecondary
-                                : AppColors.textSecondary,
+                            color: Colors.white.withValues(
+                              alpha: 0.72,
+                            ),
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+
+                        const SizedBox(height: 32),
+
+                        Text(
+                          'CAPTURE YOUR ADVENTURE',
+                          textAlign: TextAlign.center,
+                          style: AppTypography.labelSmall.copyWith(
+                            color: Colors.white.withValues(
+                              alpha: 0.58,
+                            ),
+                            letterSpacing: 3.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        Container(
+                          width: 48,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFD8B56A),
+                            borderRadius:
+                                BorderRadius.circular(10),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Logo extends StatelessWidget {
-  const _Logo();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 112,
-      height: 112,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.35),
-            blurRadius: 32,
-            offset: const Offset(0, 14),
-          ),
         ],
-      ),
-      child: Center(
-        child: Container(
-          width: 58,
-          height: 64,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(19),
-          ),
-          child: const Icon(
-            Icons.shield_rounded,
-            color: AppColors.primary,
-            size: 38,
-          ),
-        ),
       ),
     );
   }

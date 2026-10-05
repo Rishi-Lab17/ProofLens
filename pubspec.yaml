@@ -1,4 +1,4 @@
-name: ProofLens
+name: prooflens
 description: "A professional GPS camera and location evidence application."
 publish_to: 'none'
 
@@ -10,7 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.8
+  geolocator: ^14.0.2
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
