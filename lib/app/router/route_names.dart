@@ -15,5 +15,11 @@ class RouteNames {
   static const history = '/history';
   static const report = '/report';
   static const shareExport = '/share-export';
+
+  // General application settings
   static const settings = '/settings';
+
+  // GPS LENS: MAP CAMERA overlay settings
+  static const imageOverlaySettings = '/image-overlay-settings';
+  static const videoOverlaySettings = '/video-overlay-settings';
 }

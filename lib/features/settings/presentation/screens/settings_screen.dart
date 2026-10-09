@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) {
+      builder: (sheetContext) {
         return _SettingsSheet(
           title: 'Appearance',
           child: Column(
@@ -31,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 selected: themeController.themeMode == ThemeMode.system,
                 onTap: () {
                   themeController.setThemeMode(ThemeMode.system);
-                  Navigator.pop(context);
+                  Navigator.pop(sheetContext);
                 },
               ),
               _choiceTile(
@@ -40,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 selected: themeController.themeMode == ThemeMode.light,
                 onTap: () {
                   themeController.setThemeMode(ThemeMode.light);
-                  Navigator.pop(context);
+                  Navigator.pop(sheetContext);
                 },
               ),
               _choiceTile(
@@ -49,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 selected: themeController.themeMode == ThemeMode.dark,
                 onTap: () {
                   themeController.setThemeMode(ThemeMode.dark);
-                  Navigator.pop(context);
+                  Navigator.pop(sheetContext);
                 },
               ),
             ],
@@ -88,7 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) {
+      builder: (sheetContext) {
         return _SettingsSheet(
           title: 'Distance & Units',
           child: Column(
@@ -98,10 +98,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.straighten_rounded,
                 selected: _metricUnits,
                 onTap: () {
-                  setState(() {
-                    _metricUnits = true;
-                  });
-                  Navigator.pop(context);
+                  setState(() => _metricUnits = true);
+                  Navigator.pop(sheetContext);
                 },
               ),
               _choiceTile(
@@ -109,10 +107,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.straighten_rounded,
                 selected: !_metricUnits,
                 onTap: () {
-                  setState(() {
-                    _metricUnits = false;
-                  });
-                  Navigator.pop(context);
+                  setState(() => _metricUnits = false);
+                  Navigator.pop(sheetContext);
                 },
               ),
             ],
@@ -126,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) {
+      builder: (sheetContext) {
         return _SettingsSheet(
           title: 'Time Format',
           child: Column(
@@ -136,10 +132,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.schedule_rounded,
                 selected: !_twentyFourHour,
                 onTap: () {
-                  setState(() {
-                    _twentyFourHour = false;
-                  });
-                  Navigator.pop(context);
+                  setState(() => _twentyFourHour = false);
+                  Navigator.pop(sheetContext);
                 },
               ),
               _choiceTile(
@@ -147,10 +141,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.schedule_rounded,
                 selected: _twentyFourHour,
                 onTap: () {
-                  setState(() {
-                    _twentyFourHour = true;
-                  });
-                  Navigator.pop(context);
+                  setState(() => _twentyFourHour = true);
+                  Navigator.pop(sheetContext);
                 },
               ),
             ],
@@ -163,16 +155,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showPrivacyDialog() {
     showDialog<void>(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: const Text('Privacy & Local Data'),
           content: const Text(
-            'ProofLens prototype data is stored locally in the application session. '
-            'No cloud account is required for this prototype.',
+            'GPS LENS: MAP CAMERA is being developed as a local-first '
+            'prototype. No cloud account is required for the settings '
+            'screens currently implemented.',
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('Close'),
             ),
           ],
@@ -184,24 +177,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _deleteLocalData() {
     showDialog<void>(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: const Text('Delete Local Data?'),
           content: const Text(
-            'This prototype action clears locally created evidence from the current session.',
+            'This prototype action does not yet delete files from your '
+            'device. Evidence deletion will be connected when local '
+            'evidence storage is implemented.',
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Local prototype data cleared.'),
+                    content: Text(
+                      'Local evidence deletion is not implemented yet.',
+                    ),
                   ),
                 );
               },
@@ -216,20 +213,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showAbout() {
     showAboutDialog(
       context: context,
-      applicationName: 'ProofLens',
+      applicationName: 'GPS LENS: MAP CAMERA',
       applicationVersion: 'Prototype 1.0.0',
-      applicationLegalese: 'Location-aware visual evidence utility prototype.',
+      applicationLegalese: 'GPS camera and location evidence application.',
       children: const [
         SizedBox(height: 12),
         Text(
-          'ProofLens is a cross-platform prototype for capturing, '
-          'organizing and sharing location-aware visual evidence.',
+          'GPS LENS: MAP CAMERA is a cross-platform application prototype '
+          'for capturing, organizing, and sharing location-aware visual '
+          'evidence.',
         ),
         SizedBox(height: 12),
         Text(
-          'Prototype data and services are simulated locally. '
-          'Production GPS, mapping, routing and AI services will '
-          'be integrated in a later development phase.',
+          'Some features, including real camera capture, video stamping, '
+          'and evidence processing, still require implementation.',
         ),
       ],
     );
@@ -238,19 +235,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _showInfo(String title, String message) {
     showDialog<void>(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: Text(title),
           content: Text(message),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('Close'),
             ),
           ],
         );
       },
     );
+  }
+
+  void _openOverlaySettings(String route) {
+    Navigator.pushNamed(context, route);
   }
 
   @override
@@ -262,9 +263,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     };
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     final primaryText = isDark ? Colors.white : const Color(0xFF12213A);
-
     final secondaryText = isDark ? Colors.white70 : Colors.black54;
 
     final cardColor = isDark
@@ -273,12 +272,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-
         leading: IconButton(
           tooltip: 'Back',
           onPressed: () {
@@ -290,19 +287,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           },
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: primaryText),
         ),
-
         title: Text(
           'Settings',
           style: TextStyle(color: primaryText, fontWeight: FontWeight.w800),
         ),
         centerTitle: true,
       ),
-
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 30),
         children: [
           _buildProfileHeader(isDark, primaryText, secondaryText, cardColor),
-
           const SizedBox(height: 18),
 
           _section(
@@ -339,6 +333,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 14),
 
+          // New section: image and video overlay settings.
+          _section(
+            title: 'Camera Overlay Settings',
+            cardColor: cardColor,
+            titleColor: primaryText,
+            children: [
+              _settingTile(
+                icon: Icons.photo_camera_outlined,
+                title: 'Image Overlay Settings',
+                subtitle: 'Customize GPS stamps on photos',
+                primaryText: primaryText,
+                secondaryText: secondaryText,
+                onTap: () => _openOverlaySettings('/image-overlay-settings'),
+              ),
+              _settingTile(
+                icon: Icons.videocam_outlined,
+                title: 'Video Overlay Settings',
+                subtitle: 'Customize GPS stamps on videos',
+                primaryText: primaryText,
+                secondaryText: secondaryText,
+                onTap: () => _openOverlaySettings('/video-overlay-settings'),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 14),
+
           _section(
             title: 'Permissions & Device',
             cardColor: cardColor,
@@ -352,9 +373,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 primaryText: primaryText,
                 secondaryText: secondaryText,
                 onChanged: (value) {
-                  setState(() {
-                    _locationEnabled = value;
-                  });
+                  setState(() => _locationEnabled = value);
                 },
               ),
               _switchTile(
@@ -365,9 +384,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 primaryText: primaryText,
                 secondaryText: secondaryText,
                 onChanged: (value) {
-                  setState(() {
-                    _cameraEnabled = value;
-                  });
+                  setState(() => _cameraEnabled = value);
                 },
               ),
               _switchTile(
@@ -378,9 +395,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 primaryText: primaryText,
                 secondaryText: secondaryText,
                 onChanged: (value) {
-                  setState(() {
-                    _offlineMode = value;
-                  });
+                  setState(() => _offlineMode = value);
                 },
               ),
             ],
@@ -396,7 +411,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _settingTile(
                 icon: Icons.lock_outline_rounded,
                 title: 'Privacy & Local Data',
-                subtitle: 'Manage prototype-local information',
+                subtitle: 'Learn how prototype data is handled',
                 primaryText: primaryText,
                 secondaryText: secondaryText,
                 onTap: _showPrivacyDialog,
@@ -404,7 +419,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _settingTile(
                 icon: Icons.delete_outline_rounded,
                 title: 'Delete Local Data',
-                subtitle: 'Clear prototype evidence data',
+                subtitle: 'Review local evidence deletion status',
                 primaryText: primaryText,
                 secondaryText: secondaryText,
                 destructive: true,
@@ -422,7 +437,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               _settingTile(
                 icon: Icons.info_outline_rounded,
-                title: 'About ProofLens',
+                title: 'About GPS LENS',
                 subtitle: 'Prototype 1.0.0',
                 primaryText: primaryText,
                 secondaryText: secondaryText,
@@ -437,7 +452,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () {
                   _showInfo(
                     'Terms & Privacy',
-                    'This is a prototype. Production terms, privacy controls and data handling policies will be finalized before release.',
+                    'This is a prototype. Production terms, privacy '
+                        'controls, and data handling policies must be '
+                        'finalized before release.',
                   );
                 },
               ),
@@ -448,7 +465,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           Center(
             child: Text(
-              'ProofLens • Prototype 1.0.0',
+              'GPS LENS: MAP CAMERA • Prototype 1.0.0',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: secondaryText,
                 fontSize: 11,
@@ -486,10 +504,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ProofLens',
+                  'GPS LENS: MAP CAMERA',
                   style: TextStyle(
                     color: primaryText,
-                    fontSize: 19,
+                    fontSize: 17,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -594,7 +612,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           color: const Color(0xFF1687E8).withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(13),
         ),
-        child: const Icon(Icons.settings_outlined, color: Color(0xFF1687E8)),
+        child: Icon(icon, color: const Color(0xFF1687E8)),
       ),
       title: Text(
         title,

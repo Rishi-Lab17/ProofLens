@@ -1,4 +1,4 @@
-import 'dart:ui';
+﻿import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -6,7 +6,6 @@ import '../../../../app/router/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_radius.dart';
 import '../../../../core/widgets/main_navigation.dart';
-import '../../../../data/models/location_data.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/location_status_card.dart';
 
@@ -86,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      'Discover • Capture • Verify',
+                      'Discover â€¢ Capture â€¢ Verify',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.textTheme.bodySmall?.color?.withValues(
                           alpha: 0.68,
@@ -114,7 +113,6 @@ class _HomeScreenState extends State<HomeScreen> {
             top: false,
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final isWide = constraints.maxWidth >= 700;
 
                 return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -164,107 +162,50 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           const SizedBox(height: 12),
 
-                          if (isWide)
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _ActionCard(
-                                    icon: Icons.camera_alt_rounded,
-                                    title: 'GPS Camera',
-                                    subtitle:
-                                        'Capture location-aware evidence',
-                                    onTap: () => _openRoute(
-                                      context,
-                                      RouteNames.camera,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _ActionCard(
-                                    icon: Icons.my_location_rounded,
-                                    title: 'Where Am I?',
-                                    subtitle: 'View your current location',
-                                    onTap: () => _openRoute(
-                                      context,
-                                      RouteNames.location,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _ActionCard(
-                                    icon: Icons.search_rounded,
-                                    title: 'Destination',
-                                    subtitle: 'Find a place to explore',
-                                    onTap: () => _openRoute(
-                                      context,
-                                      RouteNames.search,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          else
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _ActionCard(
-                                        icon: Icons.camera_alt_rounded,
-                                        title: 'GPS Camera',
-                                        subtitle: 'Capture evidence',
-                                        onTap: () => _openRoute(
-                                          context,
-                                          RouteNames.camera,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _ActionCard(
-                                        icon: Icons.my_location_rounded,
-                                        title: 'Where Am I?',
-                                        subtitle: 'View your location',
-                                        onTap: () => _openRoute(
-                                          context,
-                                          RouteNames.location,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _ActionCard(
-                                        icon: Icons.search_rounded,
-                                        title: 'Destination',
-                                        subtitle: 'Find a place',
-                                        onTap: () => _openRoute(
-                                          context,
-                                          RouteNames.search,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _ActionCard(
-                                        icon: Icons.history_rounded,
-                                        title: 'History',
-                                        subtitle: 'View your evidence',
-                                        onTap: () => _openRoute(
-                                          context,
-                                          RouteNames.history,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                           Column(
+                             children: [
+                               _ActionCard(
+                                 icon: Icons.camera_alt_rounded,
+                                 title: 'GPS Camera',
+                                 subtitle: 'Capture location-aware evidence',
+                                 onTap: () => _openRoute(
+                                   context,
+                                   RouteNames.camera,
+                                 ),
+                               ),
+                               const SizedBox(height: 12),
+                               _ActionCard(
+                                 icon: Icons.my_location_rounded,
+                                 title: 'Where Am I?',
+                                 subtitle: 'View your current location',
+                                 onTap: () => _openRoute(
+                                   context,
+                                   RouteNames.location,
+                                 ),
+                               ),
+                               const SizedBox(height: 12),
+                               _ActionCard(
+                                 icon: Icons.search_rounded,
+                                 title: 'Destination',
+                                 subtitle: 'Find a place to explore',
+                                 onTap: () => _openRoute(
+                                   context,
+                                   RouteNames.search,
+                                 ),
+                               ),
+                               const SizedBox(height: 12),
+                               _ActionCard(
+                                 icon: Icons.history_rounded,
+                                 title: 'History',
+                                 subtitle: 'View your evidence',
+                                 onTap: () => _openRoute(
+                                   context,
+                                   RouteNames.history,
+                                 ),
+                               ),
+                             ],
+                           ),
+
 
                           const SizedBox(height: 26),
 

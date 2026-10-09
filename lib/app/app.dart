@@ -19,12 +19,13 @@ class _ProofLensAppState extends State<ProofLensApp> {
   @override
   void initState() {
     super.initState();
-
     themeController.addListener(_themeChanged);
   }
 
   void _themeChanged() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -36,16 +37,13 @@ class _ProofLensAppState extends State<ProofLensApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ProofLens',
+      title: 'GPS LENS: MAP CAMERA',
       debugShowCheckedModeBanner: false,
-
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeController.themeMode,
-
       initialRoute: RouteNames.splash,
       onGenerateRoute: AppRouter.generateRoute,
-
       builder: (context, child) {
         return ProofLensBackground(child: child ?? const SizedBox.shrink());
       },

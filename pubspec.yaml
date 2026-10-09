@@ -1,5 +1,5 @@
-name: prooflens
-description: "A professional GPS camera and location evidence application."
+name: gps_lens
+description: "GPS LENS: MAP CAMERA - GPS camera and location evidence application."
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -12,8 +12,28 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+
+  # GPS and address information
   geolocator: ^14.0.2
+  geocoding: ^4.0.0
+
+  # Camera and media
+  camera: ^0.11.2+1
+  image: ^4.5.4
+  video_player: ^2.10.0
+
+  # Local storage and preferences
+  path_provider: ^2.1.5
+  shared_preferences: ^2.5.3
+  sqflite: ^2.4.2
+  path: ^1.9.1
+
+  # Navigation and sharing
   url_launcher: ^6.3.2
+  share_plus: ^12.0.0
+
+  # Compass
+  flutter_compass: ^0.8.1
 
 dev_dependencies:
   flutter_test:
